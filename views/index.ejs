@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre>EJS</pre>
+
+    <h1>Copy From Below</h1>
+
+    <button id="download-file">Display File</button>
+    <form method="post" action="/save">
+      <textarea id="preview-text"> </textarea>
+      <button id="save-file">Save file</button>
+    </form>
+
+  </body>
+  <script>
+    document
+      .querySelector("#download-file")
+      .addEventListener("click", async function () {
+        try {
+          let text_data = await downloadFile();
+          document.querySelector("#preview-text").textContent = text_data;
+        } catch (e) {
+          alert(e.message);
+          console.log(e);
+        }
+      });
+    document.querySelector("#save-file").addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log(e);
+      const username = "BOBOBOBOjj"
+
+      const password = "OJOJOJ";
+
+      fetch("/save", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer abcdxyz",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => console.log(data));
+    });
+
+    function test() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "./save", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      //xhr.setRequestHeader("Content-Type", "text");
+      xhr.send(
+        JSON.stringify({
+          value: "TOOOOOOOOOOOOOOOOO",
+        })
+      );
+    }
+    //test()
+
+    async function downloadFile() {
+      let response = await fetch("../sample.txt");
+
+      if (response.status != 200) {
+        throw new Error("Server Error");
+      }
+
+      // read response stream as text
+      let text_data = await response.text();
+
+      return text_data;
+    }
+  </script>
+</html>
